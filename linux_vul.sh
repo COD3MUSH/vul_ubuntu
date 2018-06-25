@@ -11,30 +11,30 @@
 # n>&m : 표준출력과 표준에러를 서로바꾸는것
 # 0,1,2는 각각 표준입력,표준출력,표준에러를 의미
 # 2>&1은 표준출력의 전달되는곳으로 표준에러를 전달하라는 의미
-''' if -option
-[ -z ] : 문자열의 길이가 0이면 참
-[ -n ] : 문자열의 길이가 0이 아니면 참
-[ -eq ] : 값이 같으면 참
-[ -ne ] : 값이 다르면 참
-[ -gt ] :  값1 > 값2
-[ -ge ] : 값1  >= 값2
-[ -lt ] : 값1 < 값2
-[ -le ] : 값1 <= 값2
+# if -option
+#[ -z ] : 문자열의 길이가 0이면 참
+#[ -n ] : 문자열의 길이가 0이 아니면 참
+#[ -eq ] : 값이 같으면 참
+#[ -ne ] : 값이 다르면 참
+#[ -gt ] :  값1 > 값2
+#[ -ge ] : 값1  >= 값2
+#[ -lt ] : 값1 < 값2
+#[ -le ] : 값1 <= 값2
 
-[ -a ] : &&연산과 동일 and 연산
-[ -o ] : ||연산과 동일 xor 연산
+#[ -a ] : &&연산과 동일 and 연산
+#[ -o ] : ||연산과 동일 xor 연산
 
-[ -d ] : 파일이 디렉토리면 참
-[ -e ] : 파일이 있으면 참
-[ -L ] : 파일이 심볼릭 링크면 참
-[ -r ] : 파일이 읽기 가능하면 참
-[ -s ] : 파일의 크기가 0 보다 크면 참
-[ -w ] : 파일이 쓰기 가능하면 참
-[ -x ] : 파일이 실행 가능하면 참
-[ 파일1 -nt 파일2 ]  : 파일1이 파일2보다 최신파일이면 참
-[ 파일1 -ot 파일2 ]  : 파일1이 파일2보다 이전파일이면 참
-[ 파일1 -ef 파일2 ] : 파일1이 파일2랑 같은 파일이면 참
-'''
+#[ -d ] : 파일이 디렉토리면 참
+#[ -e ] : 파일이 있으면 참
+#[ -L ] : 파일이 심볼릭 링크면 참
+#[ -r ] : 파일이 읽기 가능하면 참
+#[ -s ] : 파일의 크기가 0 보다 크면 참
+#[ -w ] : 파일이 쓰기 가능하면 참
+#[ -x ] : 파일이 실행 가능하면 참
+#[ 파일1 -nt 파일2 ]  : 파일1이 파일2보다 최신파일이면 참
+#[ 파일1 -ot 파일2 ]  : 파일1이 파일2보다 이전파일이면 참
+#[ 파일1 -ef 파일2 ] : 파일1이 파일2랑 같은 파일이면 참
+
 
 CREATE_FILE="result_linux_vul".txt #결과 리포트
 echo > $CREATE_FILE 2>&1
@@ -331,28 +331,10 @@ fi
 # -exec 명령 {} \; / -type f(일반타입의 파일을 지정하여 검색)
 # Ex : ( Major, minor number ) 12,0 (o)/ 978525 (x)
 
-echo " " >> $CREATE_FILE 2>&1
-echo "========2-10.'$'Home/.rhosts, hosts.equiv 사용 금지========" >> $CREATE_FILE 2>&1
-echo " " >> $CREATE_FILE 2>&1
-ls -al /etc/hosts.equiv | wc -l > nofiletemp
-nofileresult=$(cat nofiletemp)
-ls -al $HOME/.rhost | wc -l > nofiletemp1
-nofileresult1=$(cat nofiletemp1)
 
-if [ $nofileresult -eq 0 ] && [ $nofileresult1 -eq 0 ]
-then
-  echo '\033[33m'"Check Result : Wait No Build
-There are no such files or directories"'\033[0m' >> $CREATE_FILE 2>&1
-#elif [ $nofileresult -eq 0 ]
-#then
-#  echo '\033[33m'"Check Result :
-#There are no such files or directories"'\033[0m' >> $CREATE_FILE 2>&1
-else
-  echo '\033[31m'"Check Result : Wait No Build"'\033[0m' >> $CREATE_FILE 2>&1
-fi
 
 echo " " >> $CREATE_FILE 2>&1
-echo "========2-11.UMASK 설정 관리========" >> $CREATE_FILE 2>&1
+echo "========2-10.UMASK 설정 관리========" >> $CREATE_FILE 2>&1
 echo " " >> $CREATE_FILE 2>&1
 cat /etc/profile | awk '{print $1, $2 }' | grep "umask" | grep -v "export" | awk '{print $2}' > vultemp
 vulresult=$(cat vultemp)
@@ -371,16 +353,32 @@ fi
 echo " " >> $CREATE_FILE 2>&1
 echo "========3-1.Finger 서비스 비활성화========" >> $CREATE_FILE 2>&1
 echo " " >> $CREATE_FILE 2>&1
+#cat /etc/services | grep "finger" | wc -l > vultemp
+# 포트 확인 가능
 
+cat /etc/inetd.conf | awk '{print $q}' | grep "finger" | grep -v "#" | wc -l = vultemp
+vulresult=$(cat vultemp)
 
-if [ $vulresult -le 022 ] # -le : 값이 같거나 작으면 참
+ls -al /usr/bin/finger | wc -l > fingertemp
+fingerresult=$(cat fingertemp)
+
+# ls -al /usr/bin/finger -eq 1 unsafe
+
+if [ $fingerresult -eq 0 ]
 then
   echo '\033[32m'"Check Result : Safe"'\033[0m' >> $CREATE_FILE 2>&1
-  cat /etc/profile | awk '{print $1, $2 }' | grep "umask" | grep -v "export" >> $CREATE_FILE 2>&1
-else
+  echo "Do not install the program 'finger'." >> $CREATE_FILE
+elif [ $vulresult -gt 0 ]
+then
   echo '\033[31m'"Check Result : UnSafe"'\033[0m' >> $CREATE_FILE 2>&1
-  cat /etc/profile | awk '{print $1, $2 }' | grep "umask" | grep -v "export" >> $CREATE_FILE 2>&1
+  cat /etc/inetd.conf | awk '{print $q}' | grep "finger" | grep -v "#" >> $CREATE_FILE
+  #
+else
+  echo '\033[32m'"Check Result : Safe"'\033[0m' >> $CREATE_FILE 2>&1
 fi
+
+# /etc/xinetd/finger 파일의 삭제
+# /etc/services 파일내에서 finger 행의 삭제 또는 주석( # ) 처리
 
 
 
@@ -400,39 +398,125 @@ else
   cat /etc/passwd | grep "ftp" >> $CREATE_FILE 2>&1
 fi
 
+echo " " >> $CREATE_FILE 2>&1
+echo "========3-3.r 계열 서비스 비활성화========" >> $CREATE_FILE 2>&1
+echo " " >> $CREATE_FILE 2>&1
 
+cat /etc/services | awk '{print $1}' | egrep "rsh|rlogin|rexec" | wc -l > vultemp
+vulresult=$(cat vultemp)
 
+if [ $vulresult -eq 0 ]
+then
+  echo '\033[32m'"Check Result : Safe"'\033[0m' >> $CREATE_FILE 2>&1
 
-
+else
+  echo '\033[31m'"Check Result : UnSafe"'\033[0m' >> $CREATE_FILE 2>&1
+  cat /etc/services | egrep "rsh|rlogin|rexec" >> $CREATE_FILE 2>&1
+fi
 
 echo " " >> $CREATE_FILE 2>&1
 echo "========3-4.cron 파일 소유자 및 권한설정========" >> $CREATE_FILE 2>&1
 echo " " >> $CREATE_FILE 2>&1
 
-ls -l /etc/cron.allow | wc -l > nofiletemp
-ls -l /etc/cron.deny | wc -l > nofiletemp1
+ls -l /etc/cron.d/cron.allow | wc -l > nofiletemp
+ls -l /etc/cron.d/cron.deny | wc -l > nofiletemp1
 nofileresult=$(cat nofiletemp)
 nofileresult1=$(cat nofiletemp1)
 
-ls -alL /etc/cron.allow | awk '{print $1}' | grep ".rw-r-----" | wc -l > allowtemp
+ls -alL /etc/cron.d/cron.allow | awk '{print $1}' | grep ".rw-r-----" | wc -l > allowtemp
 resultallow=$(cat allowtemp)
 
-ls -alL /etc/cron.deny | awk '{print $1}' | grep ".rw-r-----" | wc -l > denytemp
+ls -alL /etc/cron.d/cron.deny | awk '{print $1}' | grep ".rw-r-----" | wc -l > denytemp
 resultdeny=$(cat denytemp)
 
 if [ $nofileresult -eq 0 ] && [ $nofileresult1 -eq 0 ]
 then
   echo '\033[33m'"Check Result :
 There are no such files or directories"'\033[0m' >> $CREATE_FILE 2>&1
-
-elif [ $resultallow -eq 1 ] && [$resultdeny -eq 1 ]  then
+elif [ $resultallow -eq 1 ] && [ $resultdeny -eq 1 ]
+then
   echo '\033[32m'"Check Result : Safe"'\033[0m' >> $CREATE_FILE 2>&1
-  ls -alL /etc/cron.allow >> $CREATE_FILE 2>&1
-  ls -alL /etc/cron.deny >> $CREATE_FILE 2>&1
+  ls -alL /etc/cron.d/cron.allow >> $CREATE_FILE 2>&1
+  ls -alL /etc/cron.d/cron.deny >> $CREATE_FILE 2>&1
 else
   echo '\033[31m'"Check Result : UnSafe"'\033[0m' >> $CREATE_FILE 2>&1
-  ls -alL /etc/cron.allow >> $CREATE_FILE 2>&1
-  ls -alL /etc/cron.deny >> $CREATE_FILE 2>&1
+  ls -alL /etc/cron.d/cron.allow >> $CREATE_FILE 2>&1
+  ls -alL /etc/cron.d/cron.deny >> $CREATE_FILE 2>&1
 fi
+
+echo " " >> $CREATE_FILE 2>&1
+echo "========3-5.ssh 원격접속 허용========" >> $CREATE_FILE 2>&1
+echo " " >> $CREATE_FILE 2>&1
+
+ps -ax | grep sshd | grep -v "grep" | wc -l > vultemp
+vulresult=$(cat vultemp)
+
+if [ $vulresult -gt 0 ]
+then
+  echo '\033[32m'"Check Result : Safe"'\033[0m' >> $CREATE_FILE 2>&1
+  ps -ax | grep sshd | grep -v "grep" >> $CREATE_FILE 2>&1
+
+else
+  echo '\033[31m'"Check Result : UnSafe"'\033[0m' >> $CREATE_FILE 2>&1
+  ps -ax | grep sshd | grep -v "grep" >> $CREATE_FILE 2>&1
+
+fi
+
+
+echo " " >> $CREATE_FILE 2>&1
+echo "========3-6.SNMP 서비스 구동 점검========" >> $CREATE_FILE 2>&1
+echo " " >> $CREATE_FILE 2>&1
+
+ps -ef | grep snmp | grep -v "grep" | awk '{print $1}' | grep "snmp" | wc -l > vultemp
+vulresult=$(cat vultemp)
+#service --status-all | grep snmp
+
+if [ $vulresult -gt 0 ]
+then
+  echo '\033[31m'"Check Result : UnSafe"'\033[0m' >> $CREATE_FILE 2>&1
+  ps -ef | egrep -v "grep|root" | grep "snmp" >> $CREATE_FILE 2>&1
+else
+  echo '\033[32m'"Check Result : Safe"'\033[0m' >> $CREATE_FILE 2>&1
+fi
+
+echo " " >> $CREATE_FILE 2>&1
+echo "========3-7.expn, vrfy 명령어 제한========" >> $CREATE_FILE 2>&1
+echo " " >> $CREATE_FILE 2>&1
+
+cat /etc/mail/sendmail.cf | grep "PrivacyOptions" | grep "novrfy" | wc -l > cmpvalue1
+resultcmpvalue1=$(cat cmpvalue1)
+cat /etc/mail/sendmail.cf | grep "PrivacyOptions" | grep "noexpn" | wc -l > cmpvalue2
+resultcmpvalue2=$(cat cmpvalue2)
+
+# -eq 0 unsafe
+# || or
+
+if [ $resultcmpvalue1 -eq 1 ] && [ $resultcmpvalue2 -eq 1 ]
+then
+  echo '\033[32m'"Check Result : Safe"'\033[0m' >> $CREATE_FILE 2>&1
+  cat /etc/mail/sendmail.cf | grep "PrivacyOptions" | egrep "novrfy|noexpn" >> $CREATE_FILE 2>&1
+else
+  echo '\033[31m'"Check Result : UnSafe"'\033[0m' >> $CREATE_FILE 2>&1
+
+fi
+
+
+
+
+
+rm -f allowtemp
+rm -f denytemp
+rm -f nofiletemp
+rm -f nofiletemp1
+rm -f password
+rm -f path
+rm -f uidtemp
+rm -f vultemp
+rm -f cmpvalue1
+rm -f cmpvalue2
+
+# echo "test ======== aa"> test.html
+# sed 's/========/********/' test.html
+
 
 cat ./$CREATE_FILE
