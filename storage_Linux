@@ -1,0 +1,500 @@
+#!/bin/sh
+
+LANG=ko_KR.UTF-8
+export LANG
+
+clear
+HOSTNAME=`hostname`
+COMPUTERNAME=[RESULT]_${HOSTNAME}_NIXSVR.txt
+echo "UNIX / LINUX check_v1.1"																		>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+	
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "========================                                     ========================="		>>	$COMPUTERNAME 2>&1
+echo "==========               Unix / Linux Security Check Script                 =========="		>>	$COMPUTERNAME 2>&1
+echo "========================                                     ========================="		>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+echo [ Start Script ]
+
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "[ META DATA - (1) DATE ]"																		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+date																								>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "DATE"																							>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "[ META DATA - (2) OS Information ]"															>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+uname -a																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "OS Information"																				>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "[ META DATA - (3) Process List ]"																>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+ps -ef																								>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "Process List"																					>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "[ META DATA - (4) Netstat ]"																	>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+netstat -anp | grep -i tcp | grep -i listen															>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "Network Connection Information"																>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "[ META DATA - (5) Ipconfig ]"																	>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+ifconfig -a																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "Network Interface Information"																>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+# SYSTEM 환경변수 설정---------------------------------------------------------------------->
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "[ META DATA - (6) SYSTEM Env Variables ]"														>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+# CentOS6 기준
+PASSWD="/etc/passwd"										# passwd 파일
+SHADOW="/etc/shadow"										# shadow 파일
+GROUP="/etc/group"										# group 파일
+SHADOW_SUITE_LOGIN="/etc/login.defs"								# shadow 스윗 로그인 환경설정 파일
+SECURETTY="/etc/securetty"									# 가상 터미널 설정 파일
+PAM_DIR="/etc/pam.d"										# pam.d 디렉토리
+SU_BIN="/bin/su"
+
+PROFILE="/etc/profile"
+CSH_CONF="/etc/csh.login"
+LOGIN_CONF="/etc/pam.d/login"
+HOSTS="/etc/hosts"
+HOSTSLPD="/etc/hosts.lpd"
+HOSTS_ALLOW="/etc/hosts.allow"
+HOSTS_DENY="/etc/hosts.deny"
+SERVICES="/etc/serivces"
+HOSTS_EQUIV="/etc/hosts.equiv"
+RHOTS="/home"
+HOME_DIRS=`cat /etc/passwd | grep -v 'nologin' | grep -v 'false' | grep -v "#" | awk -F":" 'length($6) > 0 {print $6}' | sort -u`
+USER_ENV_FILES=".profile .bash_profile .bashrc .bash_login .cshrc .kshrc .login .exrc .netrc .history .sh_history .bash_history .dtprofile"
+UMASK_USER_ENV_FILES=".profile .bash_profile .bashrc .bash_login .cshrc .kshrc .login .netrc .dtprofile"
+SBIT_FILES="/sbin/dump /sbin/restore /sbin/unix_chkpwd /usr/bin/at /usr/bin/lpq /usr/bin/lpq-lpd /usr/bin/lpr /usr/bin/lpr-lpd /usr/bin/lprm /usr/bin/lprm-lpd /usr/bin/newgrp /usr/sbin/lpc /usr/sbin/lpc-lpd /usr/sbin/traceroute"
+
+
+# Service Config Variables
+R_COMMAND="rsh|rexec|rcp|rlogin"
+R_COMMAND2="shell|login|exec"
+RPC_SERVICE="rpc.cmsd|rusersd|bind|portmap|statd|usersd|rstatd|rpc.ttdbserverd|kcms_server|walld|rpc.nisd|rpc.ypupdated|cachefsd|sadmind|sprayd|rpc.pcnfsd|rexd|rpc.rquotad"
+DoS_SERVICE="echo|discard|daytime|chargen"
+NFS_SERVICE="nfsd|rpc.mountd|lockd|statd"
+AUTO_SERVICE="automountd|autofs|automount"
+NSSWITCH_CONF="/etc/nsswitch.conf"
+NIS_SERVICE="ypserv|ypbind|ypxfrd|rpc.yppasswdd|rpc.ypupdated"
+LOG="/var/log"
+SERVICE_INETD="echo|discard|daytime|chargen|time|sftp|uucp-path|nntp|ntp|netbios_ns|netbios_dgm|netbios_ssn|bftp|ldap|printer|ntalk|uucp|pcserver|ldaps|ingreslock|www-ldap-gw|nfsd|dtspcd"
+
+
+SSH_CONF="/etc/ssh/sshd_config"									# SSH 설정 파일
+INETD_CONF="/etc/inetd.conf"
+XINETD_CONF="/etc/xinetd.conf"
+XINETD_DIR="/etc/xinetd.d"
+INETD_DIR="/etc/inetd.d"
+SYSLOG_CONF="/etc/syslog.conf"
+RSYSLOG_CONF="/etc/rsyslog.conf"
+NIS_CONF="/etc/ypserv.conf"
+FTP_CONF="/etc/vsftpd/vsftpd.conf"								# FTP 설정 파일
+NFS_CONF="/etc/nfsmount.conf"
+NFS_MOUNT="/etc/exports"
+SMTP_CONF="/etc/mail/sendmail.cf"
+SNMP_CONF="/etc/snmp/snmpd.conf"
+DNS_CONF="/etc/named.conf"
+SAMBA_CONF="/etc/samba"
+NTP_CONF="/etc/ntp.conf"
+
+# Schedule Config Variables
+AT_ACC="/etc/at.allow /etc/at.deny"
+CRON_DIR="/etc/cron.d"
+CRONTAB="/etc/crontabs"
+CRON_ACC="/etc/cron.deny /etc/cron.allow"
+
+# Apache Set
+HTTPD_ROOT=`httpd -V | grep "HTTPD_ROOT" | sed 's/^.*=\(\)/\1/' | tr -d [\"][\]`
+SERVER_CONFIG_DIR=`httpd -V | grep "SERVER_CONFIG_FILE" | sed 's/^.*=\(\)/\1/' | tr -d [\"][\]`
+for dir in $HTTPD_ROOT
+do
+  for file in $SERVER_CONFIG_DIR
+  do
+    HTTPD_CONF=$dir/$file
+  done
+done
+
+
+echo " "
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+	
+	
+	
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "==========                       Account and passwords                      =========="		>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+	
+	
+echo "[ Start : 1. Account Management ]"	
+	
+echo "U-01 START"	
+echo "[ U-01. root 계정 원격 접속 제한 ]"																>>	$COMPUTERNAME 2>&1
+echo "[ 1. SSH ]"																					>>	$COMPUTERNAME 2>&1
+ps -ef | grep ssh | grep -v grep                                                                    >>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+if [ -f $SSH_CONF ]	
+then	
+	grep -i "PermitRootLogin" $SSH_CONF																>>	$COMPUTERNAME 2>&1
+else	
+	echo "$SSH_CONF 파일이 없습니다."																	>>	$COMPUTERNAME 2>&1
+fi	
+echo " "																							>>	$COMPUTERNAME 2>&1
+	
+echo "[ 2. Telnet ]"																				>>	$COMPUTERNAME 2>&1
+ps -ef | grep telnet | grep -v grep                                                                 >>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+if [ -f $SECURETTY ]	
+then	
+	cat $SECURETTY																					>>	$COMPUTERNAME 2>&1
+else	
+	echo "$SECURETTY 파일이 없습니다."																>>	$COMPUTERNAME 2>&1
+fi	
+echo " "																							>>	$COMPUTERNAME 2>&1
+	
+echo "[ 3. PAM 설정 ]"																				>>	$COMPUTERNAME 2>&1
+if [ -f $PAM_DIR/login ]	
+then	
+	grep -i "pam.securetty.so" $PAM_DIR/login														>>	$COMPUTERNAME 2>&1
+else	
+	echo "$PAM_DIR/login 파일이 없습니다."															>>	$COMPUTERNAME 2>&1
+fi	
+echo " "																							>>	$COMPUTERNAME 2>&1
+	
+echo "U-01 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+	
+	
+	
+echo "U-02 START"	
+echo "[ U-02 패스워드 복잡성 설정 ]"																	>>	$COMPUTERNAME 2>&1
+echo "[ PAM 설정 확인 - pam_cracklib.so ]"															>>	$COMPUTERNAME 2>&1
+echo " " 																							>>	$COMPUTERNAME 2>&1
+echo "[ PAM 설정 확인(1) - Redhat 계열 ]"																>>	$COMPUTERNAME 2>&1
+if [ -f "$PAM_DIR"/system-auth ]
+  then
+    cat "$PAM_DIR"/system-auth | egrep -i "minlen|lcredit|ucredit|dcredit|ocredit" | grep -v "#"	>>	$COMPUTERNAME 2>&1
+  else
+    echo "$PAM_DIR/system-auth 파일이 존재하지 않거나 $PAM_DIR/system-auth에 해당 설정이 존재하지 않음"	>>	$COMPUTERNAME 2>&1
+    echo " U-02 결과 : 수동확인"																		>>	$COMPUTERNAME 2>&1
+fi
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+echo "[ PAM 설정 확인(2) - Debian 계열 ]"																>>	$COMPUTERNAME 2>&1
+if [ -f "$PAM_DIR"/common-auth ]
+  then
+    cat "$PAM_DIR"/common-auth | egrep -i "minlen|lcredit|ucredit|dcredit|ocredit" | grep -v "#"	>>	$COMPUTERNAME 2>&1
+  else
+    echo "$PAM_DIR/common-auth 파일이 존재하지 않거나 $PAM_DIR/common-auth에 해당 설정이 존재하지 않음"	>>	$COMPUTERNAME 2>&1
+    echo " U-02 결과 : 수동확인"																		>>	$COMPUTERNAME 2>&1
+fi									
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " lcredit=알파벳 소문자 "																		>>	$COMPUTERNAME 2>&1
+echo " ucredit=알파벳 대문자 "																		>>	$COMPUTERNAME 2>&1
+echo " dcredit=숫자 "																				>>	$COMPUTERNAME 2>&1
+echo " ocredit=특수문자 "																			>>	$COMPUTERNAME 2>&1
+echo " '-'로 입력하면 최소 "																			>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-02 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-03 START"
+echo "[ U-03 계정 잠금 임계값 설정 ]"																	>>	$COMPUTERNAME 2>&1
+echo "[ PAM 설정 확인 - pam_tally.so]"																>>	$COMPUTERNAME 2>&1
+echo " " 																							>>	$COMPUTERNAME 2>&1
+echo "[ PAM 설정 확인(1) - Redhat 계열 ]"																>>	$COMPUTERNAME 2>&1
+if [ -f "$PAM_DIR"/system-auth ]
+  then
+    cat "$PAM_DIR"/system-auth | egrep -i "deny|lock_time" | grep -v "#"							>>	$COMPUTERNAME 2>&1
+  else
+    echo "$PAM_DIR/system-auth 파일이 존재하지 않음"													>>	$COMPUTERNAME 2>&1
+fi
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+echo "[ PAM 설정 확인(2) - Debian 계열 ]"																>>	$COMPUTERNAME 2>&1
+if [ -f "$PAM_DIR"/common-auth ]
+  then
+    cat "$PAM_DIR"/common-auth | egrep -i "deny|lock_time" | grep -v "#"							>>	$COMPUTERNAME 2>&1
+  else
+    echo "$PAM_DIR/common-auth 파일이 존재하지 않음"													>>	$COMPUTERNAME 2>&1
+fi
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " deny= 거부 횟수 "																				>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-03 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-04 START"
+echo "[ U-04 패스워드 파일 보호 ]"																		>>	$COMPUTERNAME 2>&1
+echo "[ 패스워드 암호화 사용여부 확인 ]"																>>	$COMPUTERNAME 2>&1
+if [ `cat $PASSWD | grep root | grep ":x:" | grep -v operator | wc -l` -eq 1 ]									
+then									
+	echo "/etc/passwd 파일 "																			>>	$COMPUTERNAME 2>&1
+	cat $PASSWD	| grep root | grep ":x:" | grep -v operator											>>	$COMPUTERNAME 2>&1
+	echo "쉐도우 패스워드를 사용하고 있습니다. "															>>	$COMPUTERNAME 2>&1
+else									
+	echo "쉐도우 패스워드를 사용하지 않습니다."															>>	$COMPUTERNAME 2>&1
+fi									
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-04 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-05 START"
+echo "[ U-05 root 이외의 UID가 '0' 금지 ]"															>>	$COMPUTERNAME 2>&1
+echo "[ $PASSWD에서 UID 0 존재 확인 ]"																>>	$COMPUTERNAME 2>&1
+if [ -f "$PASSWD" ]
+	then
+	awk -F: '$3==0 { print $1, $3 }' "$PASSWD"														>>	$COMPUTERNAME 2>&1
+	echo " "																						>>	$COMPUTERNAME 2>&1
+	echo "GID 추가 0 확인"																			>>	$COMPUTERNAME 2>&1
+	echo " "																						>>	$COMPUTERNAME 2>&1
+	awk -F: '$4==0 { print $1, $4 }' "$PASSWD"														>>	$COMPUTERNAME 2>&1
+else									
+		echo "$PASSWD 파일이 없습니다. "																>>	$COMPUTERNAME 2>&1
+fi									
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-05 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-06 START"
+echo "[ U-06 SU 명령 사용제한 ]"																		>>	$COMPUTERNAME 2>&1
+echo "[ $SU_BIN 실행 권한 및 소유그룹 확인(4750) ]"														>>	$COMPUTERNAME 2>&1
+ls -al "$SU_BIN"																					>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "[ SU 그룹 소속 확인 ]"																			>>	$COMPUTERNAME 2>&1
+cat "$GROUP"																						>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "[ PAM 모듈 확인 ]"																				>>	$COMPUTERNAME 2>&1
+cat "$PAM_DIR"/su | egrep -i "pam_wheel.so"															>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-06 END"																						>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-07 START"
+echo "[ U-07  패스워드 최소 길이 설정 ]"																>>	$COMPUTERNAME 2>&1
+echo "[ SHADOW Suite 확인 - PASS_MIN_LEN ]"															>>	$COMPUTERNAME 2>&1
+cat $SHADOW_SUITE_LOGIN	| grep -i "PASS_MIN_LEN"													>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "[ PAM 모듈 확인 - pam_cracklib_so minlen  pam_unix.so min ]"									>>	$COMPUTERNAME 2>&1
+echo "[ PAM 설정 확인(1) - Redhat 계열 ]"																>>	$COMPUTERNAME 2>&1
+if [ -f "$PAM_DIR"/system-auth ]									
+	then									
+		echo -n "pam_cracklib.so"																	>>	$COMPUTERNAME 2>&1
+		echo `cat "$PAM_DIR"/system-auth | egrep -i "pam_cracklib.so|minlen" | grep -v "#"`			>>	$COMPUTERNAME 2>&1
+		echo -n "pam_unix.so"																		>>	$COMPUTERNAME 2>&1
+		echo `cat "$PAM_DIR"/system-auth | egrep -i "pam_unix.so|minlen" | grep -v "#"`				>>	$COMPUTERNAME 2>&1
+	else
+		echo "$PAM_DIR/system-auth 파일이 존재하지 않음"												>>	$COMPUTERNAME 2>&1
+fi									
+echo " "																							>>	$COMPUTERNAME 2>&1
+									
+echo "[ PAM 설정 확인(2) - Debian 계열 ]"																>>	$COMPUTERNAME 2>&1
+if [ -f "$PAM_DIR"/common-auth ]									
+	then									
+		echo -n "pam_cracklib.so"																	>>	$COMPUTERNAME 2>&1
+		cat "$PAM_DIR"/common-auth | egrep -i "pam_cracklib.so|minlen" | grep -v "#"				>>	$COMPUTERNAME 2>&1
+		echo -n "pam_unix.so"																		>>	$COMPUTERNAME 2>&1
+		cat "$PAM_DIR"/common-auth | egrep -i "pam_unix.so|min" | grep -v "#"						>>	$COMPUTERNAME 2>&1
+	else
+		echo "$PAM_DIR/common-auth 파일이 존재하지 않음"												>>	$COMPUTERNAME 2>&1
+fi
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " minlen | min = 최소 길이 "																	>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-07 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-08 START"
+echo "[ U-08  패스워드 최대 사용기간 설정 ]"															>>	$COMPUTERNAME 2>&1
+echo "[ SHADOW Suite 확인 - PASS_MAX_DAY ]"															>>	$COMPUTERNAME 2>&1
+echo -n "[ Result : `cat $SHADOW_SUITE_LOGIN | grep -i "PASS_MAX_DAY" | grep -v "#"` ]"				>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " PASS_MAX_DAY = 최대 사용 기간 "																>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-08 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-09 START"
+echo "[ U-09  패스워드 최소 사용기간 설정 ]"															>>	$COMPUTERNAME 2>&1
+echo "[ SHADOW Suite 확인 - PASS_MIN_DAY ]"															>>	$COMPUTERNAME 2>&1
+echo -n "[ Result : `cat $SHADOW_SUITE_LOGIN | grep -i "PASS_MIN_DAY" | grep -v "#"` ]"				>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " PASS_MIN_DAY = 최소 사용 기간 "																>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-09 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-10 START"
+echo "[ U-10  불필요한 계정 제거 ]"																	>>	$COMPUTERNAME 2>&1
+echo "[ PASSWD 계정 리스트 확인 ]"																	>>	$COMPUTERNAME 2>&1
+echo "      ID       |      Shell     |     Comment"												>>	$COMPUTERNAME 2>&1
+awk -F: ' { printf "%-15s| %-15s| %-20s\n", $1, $7 ,$5 }' "$PASSWD"									>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-10 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-11 START"
+echo "[ U-11  관리자 그룹에 최소한의 계정 포함 ]"																>>	$COMPUTERNAME 2>&1
+echo "[ root group 확인 ]"																			>>	$COMPUTERNAME 2>&1
+echo "     Group     |      Members"																>>	$COMPUTERNAME 2>&1
+awk -F: '$3==0 { printf "%-15s| %-20s\n", $1, $4 }' "$GROUP"										>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-11 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-12 START"
+echo "[ U-12  계정이 존재하지 않는 GID 금지 ]"																>>	$COMPUTERNAME 2>&1
+echo "[ 구성원이 존재하지 않은 그룹 ]"																		>>	$COMPUTERNAME 2>&1
+awk -F: '$4==null' /etc/group																		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "[ PASSWD 계정 리스트 확인 ]"																		>>	$COMPUTERNAME 2>&1
+echo "      ID       |      Shell     |     Comment"												>>	$COMPUTERNAME 2>&1
+awk -F: ' { printf "%-15s| %-15s| %-20s\n", $1, $7 ,$5 }' "$PASSWD"									>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-12 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-13 START"
+echo "[ U-13 동일한 UID 점검 ]"																		>>	$COMPUTERNAME 2>&1
+echo "[ $PASSWD에서 동일한 UID 존재 확인 ]"															>>	$COMPUTERNAME 2>&1
+if [ -f "$PASSWD" ]									
+	then									
+	awk -F: '{ print $1 ":" $3 }' "$PASSWD"															>>	$COMPUTERNAME 2>&1
+	echo " "																						>>	$COMPUTERNAME 2>&1
+else									
+	echo "$PASSWD 파일이 없습니다. "																	>>	$COMPUTERNAME 2>&1
+fi									
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-13 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-14 START"
+echo "[ U-14 사용자 shell 점검 ]"																		>>	$COMPUTERNAME 2>&1
+echo "[ PASSWD 계정 리스트 확인 ]"																	>>	$COMPUTERNAME 2>&1
+echo "      ID       |      Shell     |     Comment"												>>	$COMPUTERNAME 2>&1
+awk -F: ' { printf "%-15s| %-15s| %-20s\n", $1, $7 ,$5 }' "$PASSWD"									>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-14 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+
+echo "U-15 START"
+cho "[ U-15 Session Timeout 설정 ]"																	>>	$COMPUTERNAME 2>&1
+echo "[ Profile Timeout 확인(초단위) ]"																>>	$COMPUTERNAME 2>&1
+cat $PROFILE | egrep -i "TMOUT|timeout|out" 														>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "[ CSH Timeout 확인(분단위) ]"																	>>	$COMPUTERNAME 2>&1
+cat $CSH_CONF | egrep -i "autologout|tmout"															>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "U-15 END"																						>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo " "																							>>	$COMPUTERNAME 2>&1
+
+
+echo " "																							>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "[ END Time ]"																					>>	$COMPUTERNAME 2>&1
+date																								>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+echo "==========                             END Script                           =========="		>>	$COMPUTERNAME 2>&1
+echo "======================================================================================"		>>	$COMPUTERNAME 2>&1
+
+
+echo "======================================================================================"
+echo "==========                             END Script                           =========="
+echo "======================================================================================"
+
+exit 0
