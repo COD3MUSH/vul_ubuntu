@@ -1,0 +1,461 @@
+@echo off
+cls
+PUSHD %~DP0
+set corp=nv
+set sc_ver="1.0"
+set script=.\script
+TITLE %corp%_Windows_check_%sc_ver%
+
+echo %corp%_Windows_check_%sc_ver%                                                              >	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+color 2f
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ========================                                     =========================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ==========                Windows 2008 Security Check Script                ==========     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ========================                                     =========================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo [ Start Script ]
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ META DATA - (1) DATE ]                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+date /t                                                                                         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+time /t                                                                                         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo  Start DATE                                                                                >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ META DATA - (2) OS Information ]                                                         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+systeminfo | find "OS"                                                                          >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo  OS Information                                                                            >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ META DATA - (3) Process List ]                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+tasklist                                                                                        >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo  Process List                                                                              >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ META DATA - (4) Netstat ]                                                                >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+netstat -ano                                                                                    >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo  Network Connection Information                                                            >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ META DATA - (5) Ipconfig ]                                                               >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+ipconfig /all                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo  Network Interface Information                                                             >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ META DATA - (6) Service List ]                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net start                                                                                       >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo  Activating Service List                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ META DATA - (7) Local Security Policy ]                                                  >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+secedit /EXPORT /CFG [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo  별도의 Local Security Policy 파일 생성                                                    >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ META DATA - (8) IIS Security Policy ]                                                  >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type c:\Windows\System32\Inetsrv\config\applicationHost.config >> [RESULT]_%COMPUTERNAME%_IIS7_Security_Policy.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo  별도의 Local Security Policy 파일 생성                                                    >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+rem 본문 시작---------------------------------------------------------------------------->>
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ==========                         Account Security                         ==========     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo [ Start : 1. Account Security ]
+
+echo. W-01 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-01 "Administrator 계정 이름 점검" ]                                                    >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo # 현재 시스템의 계정 #                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net user | find /v "명령을 잘 실행"                                                             >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo # Administrator 계정 활성 유무 확인 #                                                    >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net user administrator | find "활성 계정"                                                       >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-01 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo. W-02 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-02 "GUEST 계정 상태" ]                                                       >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net user guest | find "활성 계정"                                                               >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-02 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo. W-03 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-03 "불필요한 계정 제거(수동진단)" ]                                                    >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo # User List  #                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net user | find /v "명령을 잘 실행"                                                             >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo # Group List #                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net localgroup | find /v "명령을 잘 실행"                                                       >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-03 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-04 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-04 "계정 잠금 임계값 설정" ]                                                            >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "LockoutBadCount"              >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-04 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-05 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-05 "해독 가능한 암호화를 사용하여 암호 저장" ]                                                            >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "ClearTextPassword"              >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-05 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-06 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-06 "관리자 그룹에 최소한의 사용자 포함" ]                                                       >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net localgroup administrators | find /v "명령을 잘 실행"                                        >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-06 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-07 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-07 "Everyone 사용 권한을 익명 사용자에게 적용" ]                                                            >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | findstr /r /i "everyoneincludesanonymous" | findstr /v "1"              >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-05 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-08 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-08 "계정 잠금 기간 설정" ]                                                             >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo # 계정 잠금 시간 #                                                                       >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "LockoutDuration"              >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo # 계정 잠금 유지 시간 #                                                                  >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "ResetLockoutCount"            >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-08 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-09 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-09 "패스워드 복잡성 설정" ]                                                            >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "PasswordComplexity"           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-09 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-10 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-10 "패스워드 최소 암호 길이" ]                                                         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ■ Accounts Policy ■                                                                      >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net accounts                                                                                    >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ■ 패스워드 최소 길이 ■                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "MinimumPasswordLength"        >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-10 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-11 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-11 "패스워드 최대 사용 기간" ]                                                         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "MaximumPasswordAge"           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-11 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo. W-12 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-12 "패스워드 최소 사용 기간" ]                                                         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "MinimumPasswordAge"           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-12 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-13 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-13 "마지막 사용자 이름 표시 안함" ]                                                    >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | find "DontDisplayLastUserName"         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-13 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-14 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-14 "로컬 로그온 허용" ]                                                                >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "SeInteractiveLogonRight"      >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-14 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-15 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-15 "익명 SID/이름 변환 허용" ]                                                                >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "LSAAnonymousNameLookup"      >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-15 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-16 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-16 "최근 암호 기억" ]                                                              >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "PasswordHistorySize"          >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-16 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-17 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-17 "콘솔 로그온 시 로컬 계정에서 빈 암호 사용" ]                                                      >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | Find /I "LimitBlankPasswordUse"        >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-17 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-18 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-18 "원격터미널 접속 가능한 사용자 그룹 제한" ]                                                      >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_Local_Security_Policy.txt | findstr /r /i "SeRemoteInteractiveLogonRight"        >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo. # 원격터미널 접속 가능 여부 확인 #                                                                  >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+reg query "HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server" | find /I "fDenyTSConnections"   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-18 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ==========                         Service Management                       ==========     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo [ Start : 2. Service Management ]
+
+
+echo. W-19 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-19 "공유 권한 및 사용자 그룹 설정" ]                                                      >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo # 공유 디렉터리 권한 #                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net share | find /v "IPC$" | find /v "명령을 잘 실행"                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt 
+FOR /F "tokens=2 skip=4 " %%j IN ('net share') DO cacls %%j					>>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-19 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-20 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-20 "하드디스트 기본 공유 제거" ]                                                              >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo # 기본공유 #                                                                             >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net share | find /v "명령을 잘 실행"                                                            >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-20 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-21 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-21 "불필요한 서비스 제거" ]                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo. # Alerter , ClipBook , Messenger , Simple TCP/IP Services  구동 여부 #	                    >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net start | find /I "Alerter"                   ||  echo.  Alerter 서비스가 구동중이지 않습니다.          >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt   
+net start | find /I "ClipBook"                  ||  echo.  ClipBook 서비스가 구동중이지 않습니다.         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net start | find /I "Messenger"                 ||  echo.  Messenger 서비스가 구동중이지 않습니다.        >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net start | find /I "Simple TCP/IP Services"    ||  echo.  Simple TCP/IP Services 서비스가 구동중이지 않습니다.       >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-21 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-22 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-22 "IIS 서비스 구동 점검" ]                                                                 	>>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo. # IIS ADMIN 확인 #	                                                                        >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net start | find /I "IIS Admin"          >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt   
+echo. # World Widw Web Publishing Service 확인 #	                                                >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+net start | find /I "World Wide Web Publishing Service"                                         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-22 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+
+echo. W-23 START
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ W-23 "IIS 디렉토리 리스팅 제거" ]                                                               >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+type [RESULT]_%COMPUTERNAME%_IIS7_Security_Policy.txt | Find /I "directoryBrowse"        		>>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo W-23 END                                                                                   >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo ======================================================================================     >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+
+echo [ END Time ]                                                                               >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+date /t                                                                                         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+time /t                                                                                         >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo.                                                                                           >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ END Script ]                                                                             >>	[RESULT]_%COMPUTERNAME%_WINSVR.txt
+echo [ END Script ]
+pause
